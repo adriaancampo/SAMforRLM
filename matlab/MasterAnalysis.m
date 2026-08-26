@@ -2370,20 +2370,6 @@ fprintf("Figures saved to:\n%s\n", figureOut);
 
 end
 
-function p = resolveInputDir(processedDataDir, projectRoot, relativePath)
-% Resolve processed inputs from the publication layout first, then legacy root.
-primary = repoPath(processedDataDir, relativePath);
-legacy  = repoPath(projectRoot, relativePath);
-
-if isfolder(primary)
-    p = primary;
-elseif isfolder(legacy)
-    p = legacy;
-else
-    p = primary;
-end
-end
-
 function p = repoPath(projectRoot, relativePath)
 % Build a platform-independent path from a forward-slash relative path.
 parts = split(string(relativePath), "/");
