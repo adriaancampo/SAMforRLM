@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+
+# Raw/external datasets
+Data/*
+!Data/.gitkeep
+!Data/BE1109.386.10.zip
+
+# SAM model checkpoints
+Checkpoints/*
+!Checkpoints/.gitkeep
+*.pth
+
+# Generated analysis products
+Processed_Data/
+Figures_Publication/
+Tables_Publication/
