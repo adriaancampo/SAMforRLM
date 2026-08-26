@@ -12,7 +12,7 @@
 %   Tables_Publication/Table_1.xlsx ... Table_3.xlsx
 %   Processed_Data/Results.mat and detailed/statistical outputs
 %
-% The project root is supplied through PIRARD_PROJECT_ROOT by master.py.
+% The project root is supplied through PROJECT_ROOT by master.py.
 
 clc
 clear
@@ -20,9 +20,9 @@ close all
 
 repoRoot = string(fileparts(fileparts(mfilename('fullpath'))));
 
-% Python master.py sets PIRARD_PROJECT_ROOT before launching MATLAB.
+% Python master.py sets PROJECT_ROOT before launching MATLAB.
 % If MATLAB is run manually, the repository root is used as fallback.
-configuredRoot = string(getenv("PIRARD_PROJECT_ROOT"));
+configuredRoot = string(getenv("PROJECT_ROOT"));
 if strlength(configuredRoot) > 0
     projectRoot = configuredRoot;
 else
