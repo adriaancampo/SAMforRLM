@@ -1075,7 +1075,6 @@ print(gcf,...
 
 %% PUBLICATION TABLES
 %% TABLE 1 — SEGMENTATION METRICS AND INFERENCE TIME
-% Segmentation metrics and inference timing
 %
 % Segmentation metrics:
 %   Mean ± SD across tiles
@@ -1084,10 +1083,13 @@ print(gcf,...
 %   Mean ± SD across images
 %
 % Output:
-%   Publication table with:
 %   Dataset | Model | Accuracy | Precision | Recall | F1_score | Inference_time_s
 
+
+% ==========================================================
 % INPUT FILES
+% ==========================================================
+
 files = {
     repoPath(processedDataDir, "evaluation_Cu_none_vit_b_min0.001_max0.25_vs_base/per_tile_metrics.csv"),  "Cu",  "ViT-B";
     repoPath(processedDataDir, "evaluation_Cu_none_vit_l_min0.001_max0.25_vs_base/per_tile_metrics.csv"),  "Cu",  "ViT-L";
@@ -1104,8 +1106,17 @@ timingFiles = {
 };
 
 metrics = ["Accuracy","Precision","Recall","F1"];
+
+% ==========================================================
 % TIMING SUMMARY
-% Mean ± SD
+% Mean ± SD across images
+%
+% timing_per_image.csv contains one column:
+%   time_seconds
+%
+% The first half corresponds to Cu and the second half to FeM.
+% ==========================================================
+
 TimingSummary = table();
 
 for k = 1:size(timingFiles,1)
@@ -1115,19 +1126,36 @@ for k = 1:size(timingFiles,1)
 
     TT = readtable(timingPath);
 
-    requiredTimingVars = ["Dataset","time_seconds"];
-    if ~all(ismember(requiredTimingVars, string(TT.Properties.VariableNames)))
-        error("Timing CSV must contain Dataset and time_seconds columns: %s", timingPath);
+    % Check expected timing column
+    if ~ismember("time_seconds", string(TT.Properties.VariableNames))
+        error( ...
+            "Timing CSV does not contain 'time_seconds': %s", ...
+            timingPath);
     end
 
-    datasetColumn = string(TT.Dataset);
-    cuTimes  = TT.time_seconds(datasetColumn == "Cu");
-    femTimes = TT.time_seconds(datasetColumn == "FeM");
+    times = TT.time_seconds;
+    times = times(~isnan(times));
 
-    if isempty(cuTimes) || isempty(femTimes)
-        error("Timing CSV is missing Cu or FeM rows: %s", timingPath);
+    if isempty(times)
+        error("No timing values found in: %s", timingPath);
     end
+
+    % Split timing values into Cu and FeM
+    n = numel(times);
+    halfN = floor(n/2);
+
+    if halfN == 0
+        error("Not enough timing values in: %s", timingPath);
+    end
+
+    cuTimes  = times(1:halfN);
+    femTimes = times(halfN+1:end);
+
+
+    % ------------------------------------------------------
     % Cu
+    % ------------------------------------------------------
+
     rowCu = table();
 
     rowCu.Dataset = "Cu";
@@ -1138,7 +1166,12 @@ for k = 1:size(timingFiles,1)
 
     rowCu.InferenceTime_Std = ...
         std(cuTimes,"omitnan");
+
+
+    % ------------------------------------------------------
     % FeM
+    % ------------------------------------------------------
+
     rowFeM = table();
 
     rowFeM.Dataset = "FeM";
@@ -1158,8 +1191,13 @@ for k = 1:size(timingFiles,1)
     ];
 
 end
+
+
+% ==========================================================
 % SEGMENTATION METRICS
-% Mean ± SD
+% Mean ± SD across tiles
+% ==========================================================
+
 AllResults = table();
 
 for fileIdx = 1:size(files,1)
@@ -1174,10 +1212,21 @@ for fileIdx = 1:size(files,1)
 
     row.Dataset = datasetName;
     row.Model   = modelName;
+
+
+    % ------------------------------------------------------
     % Calculate mean and SD for each segmentation metric
+    % ------------------------------------------------------
+
     for metricIdx = 1:numel(metrics)
 
         metricName = metrics(metricIdx);
+
+        if ~ismember(metricName, string(T.Properties.VariableNames))
+            error( ...
+                "Metric '%s' not found in: %s", ...
+                metricName, filePath);
+        end
 
         values = T.(metricName);
         values = values(~isnan(values));
@@ -1189,7 +1238,12 @@ for fileIdx = 1:size(files,1)
             std(values,"omitnan");
 
     end
+
+
+    % ------------------------------------------------------
     % Match inference timing by dataset + model
+    % ------------------------------------------------------
+
     idxTime = ...
         TimingSummary.Dataset == row.Dataset & ...
         TimingSummary.Model   == row.Model;
@@ -1216,7 +1270,12 @@ for fileIdx = 1:size(files,1)
     ];
 
 end
+
+
+% ==========================================================
 % ROUNDED NUMERICAL RESULTS
+% ==========================================================
+
 numericVars = varfun(@isnumeric, AllResults, ...
     "OutputFormat","uniform");
 
@@ -1224,8 +1283,13 @@ AllResultsRounded = AllResults;
 
 AllResultsRounded{:,numericVars} = ...
     round(AllResultsRounded{:,numericVars},3);
+
+
+% ==========================================================
 % PUBLICATION TABLE
 % Mean ± SD
+% ==========================================================
+
 PubTable = table();
 
 PubTable.Dataset = AllResults.Dataset;
@@ -1250,11 +1314,29 @@ PubTable.F1_score = compose('%.2f ± %.2f', ...
 PubTable.Inference_time_s = compose('%.2f ± %.2f', ...
     AllResults.InferenceTime_Mean, ...
     AllResults.InferenceTime_Std);
+
+
+% ==========================================================
 % SAVE RESULTS
-writetable(PubTable, fullfile(tablesDir, "Table_1.xlsx"));
-writetable(AllResultsRounded, fullfile(processedDataDir, "Table_1_detailed.xlsx"));
-save(fullfile(processedDataDir, "Table_1_AllResults.mat"), "AllResults");
+% ==========================================================
+
+writetable( ...
+    PubTable, ...
+    fullfile(tablesDir, "Table_1.xlsx"));
+
+writetable( ...
+    AllResultsRounded, ...
+    fullfile(processedDataDir, "Table_1_detailed.xlsx"));
+
+save( ...
+    fullfile(processedDataDir, "Table_1_AllResults.mat"), ...
+    "AllResults");
+
+
+% ==========================================================
 % DISPLAY RESULTS
+% ==========================================================
+
 disp("Publication table:")
 disp(PubTable)
 
