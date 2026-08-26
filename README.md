@@ -15,7 +15,8 @@ PROJECT_ROOT/
 ├─ Data/
 │  ├─ Cu_v1/Cu_v1/...
 │  ├─ FeM_v1/FeM_v1/...
-│  └─ BE1109.386.10/...
+│  └─ BE1109.386.10/
+│     └─ XY/...
 └─ Checkpoints/
    ├─ sam_vit_b_01ec64.pth
    ├─ sam_vit_l_0b3195.pth
@@ -40,19 +41,50 @@ https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth
 ```text
 repository/
 ├─ master.py
+├─ README.md
 ├─ requirements.txt
 ├─ src/
+│  ├─ __init__.py
 │  ├─ preprocessing.py
 │  └─ sam_pipeline.py
-└─ matlab/
-   └─ MasterAnalysis.m
+├─ matlab/
+│  └─ MasterAnalysis.m
+├─ Data/
+└─ Checkpoints/
 ```
 
 ## Data for analysis
 
-The repository contains the dataset used for Case Study II (`BE1109.386.10.zip`). Extract this archive into the `Data` folder.
+### Case Study II
 
-The datasets used for Case Study I have previously been published by Gomes et al. References and links to the datasets are provided below:
+The Case Study II dataset is provided in four compressed parts because of GitHub's file-size limitations.
+
+Navigate to:
+
+`Data/BE1109.386.10/XY/`
+
+and extract `part_1.zip`, `part_2.zip`, `part_3.zip`, and `part_4.zip` **into this same directory**.
+
+After extraction, the expected directory structure is:
+
+```text
+Data/
+└── BE1109.386.10/
+    └── XY/
+        ├── a/
+        ├── b/
+        ├── c/
+        ├── d/
+        ├── e/
+        ├── f/
+        └── g/
+```
+
+The ZIP archives may be deleted after successful extraction.
+
+### Case Study I
+
+The datasets used for Case Study I have previously been published by Gomes et al. References and links to the datasets are provided below.
 
 **Cu dataset:**  
 Gomes OFM, Paciornik S, Filippo MP, da Costa GAOP, Mota GLA (2021a). *Cu dataset – A copper ore labeled images dataset for segmentation training and testing*. Zenodo. doi:10.5281/zenodo.5020566.
@@ -61,6 +93,27 @@ Gomes OFM, Paciornik S, Filippo MP, da Costa GAOP, Mota GLA (2021a). *Cu dataset
 Gomes OFM, Paciornik S, Filippo MP, da Costa GAOP, Mota GLA (2021b). *FeM dataset – An iron ore labeled images dataset for segmentation training and testing*. Zenodo. doi:10.5281/zenodo.5014700.
 
 Download and extract these datasets into the `Data` folder following the directory structure shown above.
+
+After extraction, the required input structure should be:
+
+```text
+Data/
+├── Cu_v1/
+│   └── Cu_v1/
+│       └── ...
+├── FeM_v1/
+│   └── FeM_v1/
+│       └── ...
+└── BE1109.386.10/
+    └── XY/
+        ├── a/
+        ├── b/
+        ├── c/
+        ├── d/
+        ├── e/
+        ├── f/
+        └── g/
+```
 
 ## Installation
 
