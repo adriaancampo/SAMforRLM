@@ -266,12 +266,12 @@ disp(['Saved figure to: ' outputFile])
 
 %% FIGURE 3
 files = {
-    repoPath(dataDir, "BE1109.386.10/BE1109.386.10/BE1109.386.10/XY/a/10XY_a_0.tif")
-    repoPath(dataDir, "BE1109.386.10/BE1109.386.10/BE1109.386.10/XY/a/10XY_a_30.tif")
-    repoPath(dataDir, "BE1109.386.10/BE1109.386.10/BE1109.386.10/XY/a/10XY_a_60.tif")
-    repoPath(dataDir, "BE1109.386.10/BE1109.386.10/BE1109.386.10/XY/a/10XY_a_90.tif")
-    repoPath(dataDir, "BE1109.386.10/BE1109.386.10/BE1109.386.10/XY/a/10XY_a_120.tif")
-    repoPath(dataDir, "BE1109.386.10/BE1109.386.10/BE1109.386.10/XY/a/10XY_a_150.tif")
+    repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_0.tif")
+    repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_30.tif")
+    repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_60.tif")
+    repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_90.tif")
+    repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_120.tif")
+    repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_150.tif")
 };
 
 angles = [0 30 60 90 120 150];
@@ -338,16 +338,16 @@ fprintf('Saved figure to:\n%s\n',outFile);
 %% FIGURE 4 — BIREFLECTANCE AND REFERENCE GRAIN MAP
 
 files = {
-    repoPath(dataDir, "BE1109.386.10/BE1109.386.10/BE1109.386.10/XY/a/10XY_a_0.tif")
-    repoPath(dataDir, "BE1109.386.10/BE1109.386.10/BE1109.386.10/XY/a/10XY_a_30.tif")
-    repoPath(dataDir, "BE1109.386.10/BE1109.386.10/BE1109.386.10/XY/a/10XY_a_60.tif")
-    repoPath(dataDir, "BE1109.386.10/BE1109.386.10/BE1109.386.10/XY/a/10XY_a_90.tif")
-    repoPath(dataDir, "BE1109.386.10/BE1109.386.10/BE1109.386.10/XY/a/10XY_a_120.tif")
-    repoPath(dataDir, "BE1109.386.10/BE1109.386.10/BE1109.386.10/XY/a/10XY_a_150.tif")
+    repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_0.tif")
+    repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_30.tif")
+    repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_60.tif")
+    repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_90.tif")
+    repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_120.tif")
+    repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_150.tif")
 };
 
 grainMapFile = ...
-    repoPath(dataDir, "BE1109.386.10/BE1109.386.10/BE1109.386.10/XY/a/10XY_a.tif");
+    repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a.tif");
 
 outFile = fullfile(figuresDir, "Figure_4.png");
 
@@ -1075,86 +1075,199 @@ print(gcf,...
 
 %% PUBLICATION TABLES
 %% TABLE 1 — SEGMENTATION METRICS AND INFERENCE TIME
-%
-% Segmentation metrics:
-%   Mean ± SD across tiles
-%
-% Inference timing:
-%   Mean ± SD across images
-%
-% Output:
-%   Dataset | Model | Accuracy | Precision | Recall | F1_score | Inference_time_s
-
 
 % ==========================================================
 % INPUT FILES
 % ==========================================================
 
+% Per-tile segmentation evaluation CSV files produced by
+% generateSegmentationBenchmark().
+%
+% Columns:
+%   file path | dataset | publication model name
+
 files = {
-    repoPath(processedDataDir, "evaluation_Cu_none_vit_b_min0.001_max0.25_vs_base/per_tile_metrics.csv"),  "Cu",  "ViT-B";
-    repoPath(processedDataDir, "evaluation_Cu_none_vit_l_min0.001_max0.25_vs_base/per_tile_metrics.csv"),  "Cu",  "ViT-L";
-    repoPath(processedDataDir, "evaluation_Cu_none_vit_h_min0.001_max0.25_vs_base/per_tile_metrics.csv"),  "Cu",  "ViT-H";
-    repoPath(processedDataDir, "evaluation_FeM_none_vit_b_min0.001_max0.25_vs_base/per_tile_metrics.csv"), "FeM", "ViT-B";
-    repoPath(processedDataDir, "evaluation_FeM_none_vit_l_min0.001_max0.25_vs_base/per_tile_metrics.csv"), "FeM", "ViT-L";
-    repoPath(processedDataDir, "evaluation_FeM_none_vit_h_min0.001_max0.25_vs_base/per_tile_metrics.csv"), "FeM", "ViT-H";
+    fullfile( ...
+        processedDataDir, ...
+        "evaluation_Cu_none_vit_b_min0.001_max0.25_vs_base", ...
+        "per_tile_metrics.csv"), ...
+        "Cu", "ViT-B";
+
+    fullfile( ...
+        processedDataDir, ...
+        "evaluation_Cu_none_vit_l_min0.001_max0.25_vs_base", ...
+        "per_tile_metrics.csv"), ...
+        "Cu", "ViT-L";
+
+    fullfile( ...
+        processedDataDir, ...
+        "evaluation_Cu_none_vit_h_min0.001_max0.25_vs_base", ...
+        "per_tile_metrics.csv"), ...
+        "Cu", "ViT-H";
+
+    fullfile( ...
+        processedDataDir, ...
+        "evaluation_FeM_none_vit_b_min0.001_max0.25_vs_base", ...
+        "per_tile_metrics.csv"), ...
+        "FeM", "ViT-B";
+
+    fullfile( ...
+        processedDataDir, ...
+        "evaluation_FeM_none_vit_l_min0.001_max0.25_vs_base", ...
+        "per_tile_metrics.csv"), ...
+        "FeM", "ViT-L";
+
+    fullfile( ...
+        processedDataDir, ...
+        "evaluation_FeM_none_vit_h_min0.001_max0.25_vs_base", ...
+        "per_tile_metrics.csv"), ...
+        "FeM", "ViT-H"
 };
+
+% Metrics written by generateSegmentationBenchmark()
+metrics = [
+    "Accuracy"
+    "Precision"
+    "Recall"
+    "F1"
+];
+
+
+% ==========================================================
+% TIMING FILES
+% ==========================================================
+
+% Each timing CSV contains:
+%
+%   Dataset,input_file,time_seconds
+%
+% One timing CSV contains both Cu and FeM timings for a
+% particular SAM encoder.
 
 timingFiles = {
-    repoPath(processedDataDir, "sam_outputs/inference_none_vit_b/timing_per_image.csv"), "ViT-B";
-    repoPath(processedDataDir, "sam_outputs/inference_none_vit_l/timing_per_image.csv"), "ViT-L";
-    repoPath(processedDataDir, "sam_outputs/inference_none_vit_h/timing_per_image.csv"), "ViT-H";
+    fullfile( ...
+        processedDataDir, ...
+        "sam_outputs", ...
+        "inference_none_vit_b", ...
+        "timing_per_image.csv"), ...
+        "ViT-B";
+
+    fullfile( ...
+        processedDataDir, ...
+        "sam_outputs", ...
+        "inference_none_vit_l", ...
+        "timing_per_image.csv"), ...
+        "ViT-L";
+
+    fullfile( ...
+        processedDataDir, ...
+        "sam_outputs", ...
+        "inference_none_vit_h", ...
+        "timing_per_image.csv"), ...
+        "ViT-H"
 };
 
-metrics = ["Accuracy","Precision","Recall","F1"];
 
 % ==========================================================
 % TIMING SUMMARY
-% Mean ± SD across images
-%
-% timing_per_image.csv contains one column:
-%   time_seconds
-%
-% The first half corresponds to Cu and the second half to FeM.
+% Mean ± SD across tiles/images
 % ==========================================================
 
 TimingSummary = table();
 
 for k = 1:size(timingFiles,1)
 
-    timingPath = timingFiles{k,1};
+    timingPath = string(timingFiles{k,1});
     modelName  = string(timingFiles{k,2});
 
-    TT = readtable(timingPath);
+    fprintf('\nReading timing file:\n%s\n', timingPath);
 
-    % Check expected timing column
-    if ~ismember("time_seconds", string(TT.Properties.VariableNames))
-        error( ...
-            "Timing CSV does not contain 'time_seconds': %s", ...
-            timingPath);
+    if ~isfile(timingPath)
+        error("Timing CSV does not exist: %s", timingPath);
     end
 
-    times = TT.time_seconds;
-    times = times(~isnan(times));
+
+    % ------------------------------------------------------
+    % Read CSV explicitly
+    %
+    % The Python writer produces:
+    %
+    % Dataset,input_file,time_seconds
+    %
+    % Explicit import options are used here so MATLAB does not
+    % incorrectly infer the structure of this CSV.
+    % ------------------------------------------------------
+
+    opts = delimitedTextImportOptions( ...
+        "NumVariables", 3, ...
+        "Delimiter", ",");
+
+    opts.DataLines = [2 Inf];
+
+    opts.VariableNames = [ ...
+        "Dataset", ...
+        "input_file", ...
+        "time_seconds" ...
+    ];
+
+    opts.VariableTypes = [ ...
+        "string", ...
+        "string", ...
+        "double" ...
+    ];
+
+    opts.ExtraColumnsRule = "ignore";
+    opts.EmptyLineRule = "read";
+
+    TT = readtable(timingPath, opts);
+
+
+    % ------------------------------------------------------
+    % Validate imported data
+    % ------------------------------------------------------
+
+    if isempty(TT)
+        error("Timing CSV is empty: %s", timingPath);
+    end
+
+    if ~ismember("Dataset", string(TT.Properties.VariableNames))
+        error("Dataset column could not be imported from: %s", timingPath);
+    end
+
+    if ~ismember("time_seconds", string(TT.Properties.VariableNames))
+        error("time_seconds column could not be imported from: %s", timingPath);
+    end
+
+
+    datasets = strtrim(string(TT.Dataset));
+    times    = TT.time_seconds;
+
+
+    % Remove invalid timing rows
+    validRows = ...
+        ~ismissing(datasets) & ...
+        ~isnan(times);
+
+    datasets = datasets(validRows);
+    times    = times(validRows);
+
 
     if isempty(times)
-        error("No timing values found in: %s", timingPath);
+        error("No valid timing values found in: %s", timingPath);
     end
-
-    % Split timing values into Cu and FeM
-    n = numel(times);
-    halfN = floor(n/2);
-
-    if halfN == 0
-        error("Not enough timing values in: %s", timingPath);
-    end
-
-    cuTimes  = times(1:halfN);
-    femTimes = times(halfN+1:end);
 
 
     % ------------------------------------------------------
-    % Cu
+    % Cu timing
     % ------------------------------------------------------
+
+    cuMask = strcmpi(datasets, "Cu");
+    cuTimes = times(cuMask);
+
+    if isempty(cuTimes)
+        error("No Cu timing values found in: %s", timingPath);
+    end
+
 
     rowCu = table();
 
@@ -1162,15 +1275,23 @@ for k = 1:size(timingFiles,1)
     rowCu.Model   = modelName;
 
     rowCu.InferenceTime_Mean = ...
-        mean(cuTimes,"omitnan");
+        mean(cuTimes, "omitnan");
 
     rowCu.InferenceTime_Std = ...
-        std(cuTimes,"omitnan");
+        std(cuTimes, "omitnan");
 
 
     % ------------------------------------------------------
-    % FeM
+    % FeM timing
     % ------------------------------------------------------
+
+    femMask = strcmpi(datasets, "FeM");
+    femTimes = times(femMask);
+
+    if isempty(femTimes)
+        error("No FeM timing values found in: %s", timingPath);
+    end
+
 
     rowFeM = table();
 
@@ -1178,11 +1299,15 @@ for k = 1:size(timingFiles,1)
     rowFeM.Model   = modelName;
 
     rowFeM.InferenceTime_Mean = ...
-        mean(femTimes,"omitnan");
+        mean(femTimes, "omitnan");
 
     rowFeM.InferenceTime_Std = ...
-        std(femTimes,"omitnan");
+        std(femTimes, "omitnan");
 
+
+    % ------------------------------------------------------
+    % Append timing results
+    % ------------------------------------------------------
 
     TimingSummary = [
         TimingSummary;
@@ -1190,7 +1315,20 @@ for k = 1:size(timingFiles,1)
         rowFeM
     ];
 
+
+    fprintf( ...
+        '%s | Cu: %.3f +/- %.3f s | FeM: %.3f +/- %.3f s\n', ...
+        modelName, ...
+        rowCu.InferenceTime_Mean, ...
+        rowCu.InferenceTime_Std, ...
+        rowFeM.InferenceTime_Mean, ...
+        rowFeM.InferenceTime_Std);
+
 end
+
+
+disp("Timing summary:")
+disp(TimingSummary)
 
 
 % ==========================================================
@@ -1202,11 +1340,31 @@ AllResults = table();
 
 for fileIdx = 1:size(files,1)
 
-    filePath    = files{fileIdx,1};
+    filePath    = string(files{fileIdx,1});
     datasetName = string(files{fileIdx,2});
     modelName   = string(files{fileIdx,3});
 
-    T = readtable(filePath);
+
+    fprintf( ...
+        '\nReading segmentation metrics: %s / %s\n', ...
+        datasetName, ...
+        modelName);
+
+
+    if ~isfile(filePath)
+        error("Segmentation metrics CSV does not exist: %s", filePath);
+    end
+
+
+    T = readtable( ...
+        filePath, ...
+        "VariableNamingRule", "preserve");
+
+
+    if isempty(T)
+        error("Segmentation metrics CSV is empty: %s", filePath);
+    end
+
 
     row = table();
 
@@ -1222,20 +1380,39 @@ for fileIdx = 1:size(files,1)
 
         metricName = metrics(metricIdx);
 
-        if ~ismember(metricName, string(T.Properties.VariableNames))
+        variableNames = string(T.Properties.VariableNames);
+
+        if ~ismember(metricName, variableNames)
+
             error( ...
-                "Metric '%s' not found in: %s", ...
-                metricName, filePath);
+                "Metric '%s' not found in: %s. Columns found: %s", ...
+                metricName, ...
+                filePath, ...
+                strjoin(variableNames, ", "));
+
         end
 
+
         values = T.(metricName);
+
         values = values(~isnan(values));
 
+
+        if isempty(values)
+
+            error( ...
+                "Metric '%s' contains no valid values in: %s", ...
+                metricName, ...
+                filePath);
+
+        end
+
+
         row.(metricName + "_Mean") = ...
-            mean(values,"omitnan");
+            mean(values, "omitnan");
 
         row.(metricName + "_Std") = ...
-            std(values,"omitnan");
+            std(values, "omitnan");
 
     end
 
@@ -1248,7 +1425,8 @@ for fileIdx = 1:size(files,1)
         TimingSummary.Dataset == row.Dataset & ...
         TimingSummary.Model   == row.Model;
 
-    if any(idxTime)
+
+    if sum(idxTime) == 1
 
         row.InferenceTime_Mean = ...
             TimingSummary.InferenceTime_Mean(idxTime);
@@ -1256,13 +1434,26 @@ for fileIdx = 1:size(files,1)
         row.InferenceTime_Std = ...
             TimingSummary.InferenceTime_Std(idxTime);
 
+    elseif sum(idxTime) == 0
+
+        error( ...
+            "No timing result found for Dataset=%s, Model=%s", ...
+            row.Dataset, ...
+            row.Model);
+
     else
 
-        row.InferenceTime_Mean = NaN;
-        row.InferenceTime_Std  = NaN;
+        error( ...
+            "Multiple timing results found for Dataset=%s, Model=%s", ...
+            row.Dataset, ...
+            row.Model);
 
     end
 
+
+    % ------------------------------------------------------
+    % Append segmentation result
+    % ------------------------------------------------------
 
     AllResults = [
         AllResults;
@@ -1276,13 +1467,16 @@ end
 % ROUNDED NUMERICAL RESULTS
 % ==========================================================
 
-numericVars = varfun(@isnumeric, AllResults, ...
-    "OutputFormat","uniform");
+numericVars = varfun( ...
+    @isnumeric, ...
+    AllResults, ...
+    "OutputFormat", ...
+    "uniform");
 
 AllResultsRounded = AllResults;
 
 AllResultsRounded{:,numericVars} = ...
-    round(AllResultsRounded{:,numericVars},3);
+    round(AllResultsRounded{:,numericVars}, 3);
 
 
 % ==========================================================
@@ -1295,23 +1489,33 @@ PubTable = table();
 PubTable.Dataset = AllResults.Dataset;
 PubTable.Model   = AllResults.Model;
 
-PubTable.Accuracy = compose('%.2f ± %.2f', ...
+
+PubTable.Accuracy = compose( ...
+    '%.2f ± %.2f', ...
     AllResults.Accuracy_Mean, ...
     AllResults.Accuracy_Std);
 
-PubTable.Precision = compose('%.2f ± %.2f', ...
+
+PubTable.Precision = compose( ...
+    '%.2f ± %.2f', ...
     AllResults.Precision_Mean, ...
     AllResults.Precision_Std);
 
-PubTable.Recall = compose('%.2f ± %.2f', ...
+
+PubTable.Recall = compose( ...
+    '%.2f ± %.2f', ...
     AllResults.Recall_Mean, ...
     AllResults.Recall_Std);
 
-PubTable.F1_score = compose('%.2f ± %.2f', ...
+
+PubTable.F1_score = compose( ...
+    '%.2f ± %.2f', ...
     AllResults.F1_Mean, ...
     AllResults.F1_Std);
 
-PubTable.Inference_time_s = compose('%.2f ± %.2f', ...
+
+PubTable.Inference_time_s = compose( ...
+    '%.2f ± %.2f', ...
     AllResults.InferenceTime_Mean, ...
     AllResults.InferenceTime_Std);
 
@@ -1324,9 +1528,11 @@ writetable( ...
     PubTable, ...
     fullfile(tablesDir, "Table_1.xlsx"));
 
+
 writetable( ...
     AllResultsRounded, ...
     fullfile(processedDataDir, "Table_1_detailed.xlsx"));
+
 
 save( ...
     fullfile(processedDataDir, "Table_1_AllResults.mat"), ...
@@ -1337,7 +1543,7 @@ save( ...
 % DISPLAY RESULTS
 % ==========================================================
 
-disp("Publication table:")
+disp("Publication Table 1:")
 disp(PubTable)
 
 disp(" ")
