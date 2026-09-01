@@ -4,4 +4,5 @@ opencv-python>=4.8
 scipy>=1.10
 scikit-image>=0.21
 torch>=2.0
+torchvision>=0.15
 git+https://github.com/facebookresearch/segment-anything.git
