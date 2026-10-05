@@ -174,10 +174,8 @@ end
 save(resultsPath, "Results", "resultMethodNames")
 
 %% FIGURE 1
-
 % Load images
 REF = imread(repoPath(dataDir, "Cu_v1/Cu_v1/Reference/Cu_001_Ref.tif"));
-
 RLM = imread(repoPath(dataDir, "Cu_v1/Cu_v1/Reflected_Light_Microscopy/Cu_001_RLM.tif"));
 
 % Create tight figure
@@ -190,27 +188,18 @@ t = tiledlayout(1,2, ...
     'TileSpacing','compact');
 
 % RLM
-nexttile
+ax1 = nexttile;
 imshow(RLM, [])
-
-title('RLM', ...
-    'FontSize',24, ...
-    'FontWeight','bold')
-
+addPanelLabel(ax1,'a')
 addScaleBar(98,'50 \mum')
 
 % Reference
-nexttile
+ax2 = nexttile;
 imshow(REF, [])
-
-title('Reference', ...
-    'FontSize',24, ...
-    'FontWeight','bold')
+addPanelLabel(ax2,'b')
 
 % Export tightly cropped figure
-outputFile = fullfile( ...
-    figuresDir, ...
-    'Figure_1.png');
+outputFile = fullfile(figuresDir, 'Figure_1.png');
 
 exportgraphics(fig, outputFile, ...
     'Resolution',300, ...
@@ -219,8 +208,23 @@ exportgraphics(fig, outputFile, ...
 disp(['Saved figure to: ' outputFile])
 
 
-%% FIGURE 2
+% Local function
+function addPanelLabel(ax, letter)
 
+    text(ax, 0.03, 0.97, letter, ...
+        'Units','normalized', ...
+        'HorizontalAlignment','left', ...
+        'VerticalAlignment','top', ...
+        'FontSize',18, ...
+        'FontWeight','bold', ...
+        'Color','k', ...
+        'BackgroundColor','w', ...
+        'EdgeColor','k', ...
+        'Margin',4);
+
+end
+
+%% FIGURE 2
 % Load images
 REF = imread(repoPath(dataDir, "FeM_v1/FeM_v1/Reference/FeM_001_Ref.tif"));
 
@@ -236,22 +240,17 @@ t = tiledlayout(1,2, ...
     'TileSpacing','compact');
 
 % RLM
-nexttile
+ax1 = nexttile;
 imshow(RLM, [])
 
-title('RLM', ...
-    'FontSize',24, ...
-    'FontWeight','bold')
-
+addPanelLabel(ax1,'a')
 addScaleBar(98,'100 \mum')
 
 % Reference
-nexttile
+ax2 = nexttile;
 imshow(REF, [])
 
-title('Reference', ...
-    'FontSize',24, ...
-    'FontWeight','bold')
+addPanelLabel(ax2,'b')
 
 % Export tightly cropped figure
 outputFile = fullfile( ...
@@ -314,12 +313,14 @@ for i = 1:N
 
     axis image off
 
+    % Angle label: white box, black border, black text
     text(12,25,...
         sprintf('%d%c',angles(i),char(176)),...
-        'Color','w',...
+        'Color','k',...
         'FontWeight','bold',...
         'FontSize',16,...
-        'BackgroundColor','k',...
+        'BackgroundColor','w',...
+        'EdgeColor','k',...
         'Margin',4);
 
     if i == 4
@@ -331,12 +332,11 @@ outFile = fullfile(figuresDir, "Figure_3.png");
 
 exportgraphics(gcf,...
     outFile,...
-    'Resolution',600);
+    'Resolution',600,...
+    'BackgroundColor','white');
 
 fprintf('Saved figure to:\n%s\n',outFile);
-
 %% FIGURE 4 — BIREFLECTANCE AND REFERENCE GRAIN MAP
-
 files = {
     repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_0.tif")
     repoPath(dataDir, "BE1109.386.10/XY/a/10XY_a_30.tif")
@@ -383,7 +383,6 @@ grainMap = grainMap(y0:y0+cropSize-1, x0:x0+cropSize-1);
 % boundary = 50
 % pore     = 100
 
-
 figure( ...
     'Color','white', ...
     'Units','pixels', ...
@@ -401,10 +400,7 @@ axis image off;
 colormap(ax1,gray);
 caxis([min(bireflectanceImg(:)) max(bireflectanceImg(:))]);
 addScaleBar(75,'50 \mum')
-
-title('Bireflectance image', ...
-    'FontSize',16, ...
-    'FontWeight','bold');
+addPanelLabel(ax1,'a')
 
 % Reference grain map
 ax2 = nexttile;
@@ -426,14 +422,12 @@ grainRGB(:,:,3) = ...
 
 imshow(grainRGB);
 axis image off;
-
-title('Gradient-based grain-boundary map', ...
-    'FontSize',16, ...
-    'FontWeight','bold');
+addPanelLabel(ax2,'b')
 
 exportgraphics(gcf,...
     outFile,...
-    'Resolution',600);
+    'Resolution',600,...
+    'BackgroundColor','white');
 
 fprintf('Saved figure to:\n%s\n',outFile);
 
@@ -460,33 +454,25 @@ t = tiledlayout(2,2, ...
     'TileSpacing','compact');
 
 % RLM
-nexttile
+ax1 = nexttile;
 imshow(Orig)
-title('RLM', ...
-    'FontSize',20, ...
-    'FontWeight','bold')
+addPanelLabel(ax1,'a')
 addScaleBar(98,'50 \mum')
 
 % ViT-B
-nexttile
+ax2 = nexttile;
 imshow(vitB)
-title('ViT-B', ...
-    'FontSize',20, ...
-    'FontWeight','bold')
+addPanelLabel(ax2,'b')
 
 % ViT-L
-nexttile
+ax3 = nexttile;
 imshow(vitL)
-title('ViT-L', ...
-    'FontSize',20, ...
-    'FontWeight','bold')
+addPanelLabel(ax3,'c')
 
 % ViT-H
-nexttile
+ax4 = nexttile;
 imshow(vitH)
-title('ViT-H', ...
-    'FontSize',20, ...
-    'FontWeight','bold')
+addPanelLabel(ax4,'d')
 
 % Save figure
 outputFile = fullfile(figuresDir, "Figure_5.png");
@@ -495,8 +481,10 @@ exportgraphics(t, outputFile, ...
     'Resolution',300, ...
     'BackgroundColor','white');
 
-%% FIGURE 6
+fprintf('Saved figure to:\n%s\n', outputFile);
 
+
+%% FIGURE 6
 folder = processedDataDir;
 
 % Load images
@@ -518,33 +506,25 @@ t = tiledlayout(2,2, ...
     'TileSpacing','compact');
 
 % RLM
-nexttile
+ax1 = nexttile;
 imshow(Orig)
-title('RLM', ...
-    'FontSize',20, ...
-    'FontWeight','bold')
+addPanelLabel(ax1,'a')
 addScaleBar(98,'100 \mum')
 
 % ViT-B
-nexttile
+ax2 = nexttile;
 imshow(vitB)
-title('ViT-B', ...
-    'FontSize',20, ...
-    'FontWeight','bold')
+addPanelLabel(ax2,'b')
 
 % ViT-L
-nexttile
+ax3 = nexttile;
 imshow(vitL)
-title('ViT-L', ...
-    'FontSize',20, ...
-    'FontWeight','bold')
+addPanelLabel(ax3,'c')
 
 % ViT-H
-nexttile
+ax4 = nexttile;
 imshow(vitH)
-title('ViT-H', ...
-    'FontSize',20, ...
-    'FontWeight','bold')
+addPanelLabel(ax4,'d')
 
 % Save figure
 outputFile = fullfile(figuresDir, "Figure_6.png");
@@ -553,8 +533,9 @@ exportgraphics(t, outputFile, ...
     'Resolution',300, ...
     'BackgroundColor','white');
 
-%% FIGURE 7
+fprintf('Saved figure to:\n%s\n', outputFile);
 
+%% FIGURE 7
 folder = processedDataDir;
 
 % Load images
@@ -568,43 +549,44 @@ vitH = imread(repoPath(folder, "sam_outputs/inference_proj_vit_h/XY_a/stacks/XY_
 
 % Create compact figure
 fig = figure('Color','w', ...
-'Units','pixels', ...
-'Position',[100 100 900 950]);
+    'Units','pixels', ...
+    'Position',[100 100 900 950]);
 
 t = tiledlayout(2,2, ...
-'Padding','compact', ...
-'TileSpacing','compact');
+    'Padding','compact', ...
+    'TileSpacing','compact');
 
 % Orig
-nexttile
+ax1 = nexttile;
 imshow(Orig)
-title('RLM', 'FontSize', 20, 'FontWeight','bold')
+addPanelLabel(ax1,'a')
 addScaleBar(75,'50 \mum')
 
 % ViT-B
-nexttile
+ax2 = nexttile;
 imshow(vitB)
-title('ViT-B', 'FontSize', 20, 'FontWeight','bold')
+addPanelLabel(ax2,'b')
 
 % ViT-L
-nexttile
+ax3 = nexttile;
 imshow(vitL)
-title('ViT-L', 'FontSize', 20, 'FontWeight','bold')
+addPanelLabel(ax3,'c')
 
 % ViT-H
-nexttile
+ax4 = nexttile;
 imshow(vitH)
-title('ViT-H', 'FontSize', 20, 'FontWeight','bold')
+addPanelLabel(ax4,'d')
 
 % Save figure
 outputFile = fullfile(figuresDir, "Figure_7.png");
 
 exportgraphics(t, outputFile, ...
-'Resolution',300, ...
-'BackgroundColor','white');
+    'Resolution',300, ...
+    'BackgroundColor','white');
+
+fprintf('Saved figure to:\n%s\n', outputFile);
 
 %% FIGURE 8
-
 folder = processedDataDir;
 
 % Load images
@@ -618,40 +600,42 @@ vitH = imread(repoPath(folder, "sam_outputs/inference_pca_vit_h/XY_a/stacks/XY_a
 
 % Create compact figure
 fig = figure('Color','w', ...
-'Units','pixels', ...
-'Position',[100 100 900 950]);
+    'Units','pixels', ...
+    'Position',[100 100 900 950]);
 
 t = tiledlayout(2,2, ...
-'Padding','compact', ...
-'TileSpacing','compact');
+    'Padding','compact', ...
+    'TileSpacing','compact');
 
 % Orig
-nexttile
+ax1 = nexttile;
 imshow(Orig)
-title('RLM', 'FontSize', 20, 'FontWeight','bold')
+addPanelLabel(ax1,'a')
 addScaleBar(75,'50 \mum')
 
 % ViT-B
-nexttile
+ax2 = nexttile;
 imshow(vitB)
-title('ViT-B', 'FontSize', 20, 'FontWeight','bold')
+addPanelLabel(ax2,'b')
 
 % ViT-L
-nexttile
+ax3 = nexttile;
 imshow(vitL)
-title('ViT-L', 'FontSize', 20, 'FontWeight','bold')
+addPanelLabel(ax3,'c')
 
 % ViT-H
-nexttile
+ax4 = nexttile;
 imshow(vitH)
-title('ViT-H', 'FontSize', 20, 'FontWeight','bold')
+addPanelLabel(ax4,'d')
 
 % Save figure
 outputFile = fullfile(figuresDir, "Figure_8.png");
 
 exportgraphics(t, outputFile, ...
-'Resolution',300, ...
-'BackgroundColor','white');
+    'Resolution',300, ...
+    'BackgroundColor','white');
+
+fprintf('Saved figure to:\n%s\n', outputFile);
 
 %% FIGURE 9
 
