@@ -1,6 +1,8 @@
 # SAM grain-segmentation and stereological analysis pipeline
 
-This repository contains the complete Python → MATLAB analysis pipeline used to generate the processed segmentation data, publication figures, publication tables, and image-level statistics reported in *Zero-shot mineral segmentation in reflected-light microscopy using the Segment Anything Model* (Adriaan Campo and Eric Pirard, submitted to *Image Analysis and Stereology*, 2026).
+This repository contains the complete Python → MATLAB analysis pipeline used to generate the processed segmentation data, publication figures, tables, and image-level statistics presented in the peer-reviewed article *“Zero-shot mineral segmentation in reflected-light microscopy using the Segment Anything Model”* by Adriaan Campo and Eric Pirard, published in *Image Analysis and Stereology* (2026).
+
+**Publication:** [https://doi.org/10.5566/ias.4060](https://doi.org/10.5566/ias.4060)
 
 All figures, tables, and statistical analyses reported in the publication can therefore be reproduced by running this pipeline.
 
